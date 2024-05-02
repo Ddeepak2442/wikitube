@@ -41,7 +41,8 @@ export default async function (req, res) {
     return;
   }
 
-  const prompt = req.body.prompt || '';
+  const { prompt = '', temperature, maxtokens } = req.body;
+
   if (prompt.trim().length === 0) {
     res.status(400).json({
       error: {
@@ -51,7 +52,12 @@ export default async function (req, res) {
     return;
   }
 
+  const temperatureValue = parseFloat(temperature);
+  const maxTokensValue = parseInt(maxtokens, 10);
+
   console.log('User prompt:', prompt);
+  console.log('temperature:', temperature)
+  console.log('maxtokens:', maxtokens)
 
   try {
     const completion = await openai.chat.completions.create({
@@ -60,9 +66,11 @@ export default async function (req, res) {
       messages:[
           {
             "role": "user", 
-            "content": `Do not explain, answer only in code. You are converting user text input into p5.js code. Your response must start with 'function setup() {' or 'const' or 'let'. Your response must include 'function setup()' and 'function draw()'. This is the user text input: ${prompt}`
+            "content": `${prompt}`
           }
-        ]
+        ],
+        temperature: temperatureValue, 
+      max_tokens: maxTokensValue
     });
   console.log(completion); 
   console.log("Sent: " + completion.choices[0].message.content);

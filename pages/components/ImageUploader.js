@@ -1,11 +1,12 @@
 import React from "react";
+import imageCompression from 'browser-image-compression';
 
 function ImageUploader(props) {
   const {
     handleDrop,
     handleDragOver,
     handleDragLeave,
-    handleFileChange,
+    handleFileChange: originalHandleFileChange,
     preview,
     uploadProgress,
     handleSubmit,
@@ -16,6 +17,27 @@ function ImageUploader(props) {
     Remix,
     selectPrompt,
   } = props;
+    // Compress image if it's more than 1MB
+    const handleFileChange = async (file) => {
+      console.log(`Original file size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+      if (file.size > 1024 * 1024) { // file size is more than 1MB
+        try {
+          const options = {
+            maxSizeMB: 1, // (max file size in MB)
+            maxWidthOrHeight: 1920, // (compressed file width)
+            useWebWorker: true
+          };
+          const compressedFile = await imageCompression(file, options);
+          console.log(`Compressed file size: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+          originalHandleFileChange(compressedFile);
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        originalHandleFileChange(file);
+      }
+    };
+  
 
   return (
     <div className="rounded-md border border-gray-100 shadow-md shadow-emerald-600/30 bg-white p-3">
