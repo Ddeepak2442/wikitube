@@ -5,6 +5,7 @@ import Editor from "./components/Editor";
 import RunContainer from "./components/RunContainer";
 import Header from "./components/Header";
 import ImageUploader from "./components/ImageUploader";
+import WikipediaInput from "./components/WikipediaInput";
 
 export default function Home() {
   const [result, setResult] = useState("// type a text prompt or provide flashcard above and click 'Generate Microsim'");
@@ -14,7 +15,7 @@ export default function Home() {
   const [logMsg, setlogMsg] = useState("");
   const [selVal, setSelVal] = useState("");
   const [TextPrompt,setTextPrompt] = useState(false);
-
+  
   const egArray = [
     {
       value: "Conway's Game of Life",
@@ -455,6 +456,98 @@ export default function Home() {
       }`
     },
   ];
+
+  function textInputChange(event) {
+    event.preventDefault();
+    setTextInput(event.target.value);
+  }
+
+  async function textInputSubmit(event) {
+    event.preventDefault();
+    setlogMsg("");
+    setWaiting(true);
+    setTextPrompt(true);
+    setResult("// Please be patient, this may take a while...");
+    setSelVal("");
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_REMOTE_API_URL || ''}/api/generate`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: textInput }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        setWaiting(false);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+      setResult(data.code);
+      setSandboxRunning(true);
+      setWaiting(false);
+    } catch(error) {
+      console.error(error);
+      alert(error.message);
+      setWaiting(false);
+    }
+  }
+
+
+  // wikipedia code
+  const [wikipediaInput,setwikipediaInput] = useState("");
+  const [wikipediaPrompt,setwikipediaPrompt]=useState(false);
+
+  
+  function wikipediaInputChange(event) {
+    event.preventDefault();
+    setwikipediaInput(event.target.value);
+  }
+
+  
+  async function wikipediaInputSubmit(event) {
+    event.preventDefault();
+    setlogMsg("");
+    setWaiting(true);
+    setwikipediaPrompt(true);
+    setResult("// Please be patient, this may take a while...");
+    setSelVal("");
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_REMOTE_API_URL || ''}/api/wikipediaprompt`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: wikipediaInput }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        setWaiting(false);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+      setResult(data.code);
+      setSandboxRunning(true);
+      setWaiting(false);
+    } catch(error) {
+      console.error(error);
+      alert(error.message);
+      setWaiting(false);
+    }
+  }
+
+
+
+  const [selectPrompt,setselectPrompt] = useState(""); //for selecting prompt in Remix
+  const [file, setFile] = useState(null); // Holds the selected image file
+  const [preview, setPreview] = useState(''); // URL for the image preview
+  const [analysisresult, setanalysisResult] = useState(''); // Stores the analysis result
+  const [uploadProgress, setUploadProgress] = useState(0); // Manages the upload progress
+  const [statusMessage, setStatusMessage] = useState(''); // Displays status messages to the user
+  const [dragOver, setDragOver] = useState(false); // UI state for drag-and-drop
+  const [base64Image, setBase64Image] = useState('');
+
+  
   const Remix = [
     {
       value: "Review",
@@ -477,15 +570,6 @@ export default function Home() {
       prompt: "You are an expert P5.js engineer with advanced degrees in Computation, Robotics, Engineering, Audio, Television and Energy domains.you are provided with a flashcard that has three items one is a prompt,second is an Image,lastly wikipedia and p5.js links,all these things describes a concept.You are also provided with a P5.js code at the end.The provided code is not working good.Now,your task is to review the concept and try a fun, silly or creative approach but with serious consideration of the P5.js library to make sure it works.Answer only in code,do not try to explain.And the code you have to work is as follows:",
     },
   ]
-
-  const [selectPrompt,setselectPrompt] = useState(""); //for selecting prompt in Remix
-  const [file, setFile] = useState(null); // Holds the selected image file
-  const [preview, setPreview] = useState(''); // URL for the image preview
-  const [analysisresult, setanalysisResult] = useState(''); // Stores the analysis result
-  const [uploadProgress, setUploadProgress] = useState(0); // Manages the upload progress
-  const [statusMessage, setStatusMessage] = useState(''); // Displays status messages to the user
-  const [dragOver, setDragOver] = useState(false); // UI state for drag-and-drop
-  const [base64Image, setBase64Image] = useState('');
 
   const handleFileChange = useCallback(async (selectedFile) => {
     setFile(selectedFile);
@@ -645,42 +729,7 @@ export default function Home() {
     return () => window.removeEventListener("message", handler)
   }, [result, sandboxRunning])
 
-  function textInputChange(event) {
-    event.preventDefault();
-    setTextInput(event.target.value);
-  }
-
-  async function textInputSubmit(event) {
-    event.preventDefault();
-    setlogMsg("");
-    setWaiting(true);
-    setTextPrompt(true);
-    setResult("// Please be patient, this may take a while...");
-    setSelVal("");
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_REMOTE_API_URL || ''}/api/generate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt: textInput }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        setWaiting(false);
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-      setResult(data.code);
-      setSandboxRunning(true);
-      setWaiting(false);
-    } catch(error) {
-      console.error(error);
-      alert(error.message);
-      setWaiting(false);
-    }
-  }
-
+  
   const editorChange = useCallback((value, viewUpdate) => {
     setResult(value);
   }, []);
@@ -740,8 +789,12 @@ export default function Home() {
               selectPrompt={selectPrompt}
               PromptChange={PromptChange}
             />
+            <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} />
+          
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
           </div>
+
+            
           <div className="flex flex-col gap-4 2xl:w-1/2">
             <RunContainer key="runcont-01" sandboxRunning={sandboxRunning} clickPlay={runClickPlay} clickStop={runClickStop} result={result} logMsg={logMsg} waiting={waiting}/>
           </div>
