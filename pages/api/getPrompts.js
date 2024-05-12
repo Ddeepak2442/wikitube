@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const client = await pool.connect();
-      const result = await client.query('SELECT * FROM prompts');
+      const result = await client.query('SELECT * FROM prompts ORDER BY id DESC LIMIT 10');
       client.release();
       res.status(200).json(result.rows);
     } catch (error) {
