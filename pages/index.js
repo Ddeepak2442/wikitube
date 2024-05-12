@@ -7,6 +7,8 @@ import Header from "./components/Header";
 import ImageUploader from "./components/ImageUploader";
 import WikipediaInput from "./components/WikipediaInput";
 
+
+
 export default function Home() {
   const [result, setResult] = useState("// type a text prompt or provide flashcard above and click 'Generate Microsim'");
   const [textInput, setTextInput] = useState("");
@@ -618,9 +620,9 @@ export default function Home() {
           setanalysisResult(apiResponse.analysis);
           setStatusMessage('Analysis complete.');
           setUploadProgress(100);
-          const coderesult = apiResponse.analysis;
-          const extractedCode = coderesult.slice(14, -3);
-          setResult(extractedCode);
+          const analysisObject = JSON.parse(apiResponse.analysis); 
+          const coderesult = analysisObject.code; 
+          setResult(coderesult);
           setSandboxRunning(true);
           setWaiting(false);
         } else {
@@ -635,6 +637,53 @@ export default function Home() {
       setStatusMessage(`HTTP error! status: ${response.status}`);
     }
   };
+  
+  const [isSaved, setIsSaved] = useState(false);
+
+  const handleSave = async () => {
+    if (!analysisresult || !file) {
+      alert('No analysis result or file to save.');
+      return;
+    }
+  
+    // Parse the analysisresult JSON string into an object
+    const analysisObject = JSON.parse(analysisresult);
+    
+  
+    try {
+      // Prepare the payload with the parsed data and the SVG
+      const payload = {
+        prompt_name: analysisObject.prompt_name,
+        prompt: analysisObject.prompt,
+        wikipedia_link: analysisObject.wikipedia_link,
+        code: analysisObject.code,
+        imageBase64: base64Image
+        // flashcard_svg: svgData // This should be the SVG data as a string
+      };
+  
+      // Send the payload to your backend for saving to the database
+      const response = await fetch('/api/savePrompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        alert('Record saved successfully!');
+        setIsSaved(true);
+        // Handle success, maybe clear state or redirect
+      } else {
+        // Handle errors
+        alert(`Failed to save record: ${response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Error saving record:', error);
+      alert('Error saving record.');
+    }
+  };  
 
   const PromptChange = async (event) => {
     event.preventDefault();
@@ -792,7 +841,17 @@ export default function Home() {
             <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} />
           
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
-          </div>
+            {/* Conditionally render the Save button */}
+            {analysisresult && (
+        <button
+          className={`bg-emerald-500 p-2 rounded w-full text-white text-sm px-3 cursor-pointer ${isSaved ? 'bg-gray-500' : ''}`}
+          onClick={handleSave}
+          disabled={isSaved} // Disable the button based on isSaved state
+        >
+          {isSaved ? 'Saved to Database' : 'Save'} {/* Change button text based on isSaved state */}
+        </button>
+      )}
+      </div>
 
             
           <div className="flex flex-col gap-4 2xl:w-1/2">

@@ -12,9 +12,12 @@
     "@uiw/react-codemirror": "^4.19.16",
     "@vercel/analytics": "^1.0.0",
     "browser-image-compression": "^2.0.2",
+    "canvas": "^2.11.2",
     "cors": "^2.8.5",
+    "imagetracerjs": "^1.2.6",
     "next": "^14.2.3",
     "openai": "^4.16.1",
+    "pg": "^8.11.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
