@@ -2,14 +2,14 @@ export default function WikipediaInput({WikipediaInput, onChange, onSubmit, wait
     return (
       <div className="rounded-md border border-gray-100 shadow-md shadow-emerald-600/30 bg-white p-3">
         <div className="flex justify-between xs:mb-2">
-          <h3 className="font-semibold text-gray-500">wikipedia prompt</h3>
+          <h3 className="font-semibold text-gray-500">WIKIPEDIA LINK</h3>
         </div>
         <form onSubmit={onSubmit} className="w-full">
           <textarea key="textarea-01" className="block min-h-[50px] xs:min-h-[70px] border-[1.5px] border-emerald-500 p-2 rounded w-full mb-2 text-sm
           disabled:border-gray-300 disabled:text-gray-600 disabled:bg-gray-100"
             type="text"
             name="prompt"
-            placeholder="Give only wikipedia for a p5.js sketch"
+            placeholder="Give only wikipedia link for a p5.js sketch"
             value={WikipediaInput}
             onChange={onChange}
             disabled={waiting}
@@ -20,7 +20,7 @@ export default function WikipediaInput({WikipediaInput, onChange, onSubmit, wait
             Generating MicroSim...
           </button>
           : 
-          <button className="bg-emerald-500 p-2 rounded w-full text-white text-sm px-3 cursor-pointer" type="submit">Generate MicroSim</button> }
+          <button className="bg-emerald-500 p-2 rounded w-full text-white text-sm px-3 cursor-pointer" type="submit">Generate Microsim</button> }
           
         </form>
       </div>

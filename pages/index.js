@@ -515,29 +515,30 @@ export default function Home() {
     setResult("// Please be patient, this may take a while...");
     setSelVal("");
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_REMOTE_API_URL || ''}/api/wikipediaprompt`, {
+      const response = await fetch('/api/checkWikipediaLink', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: wikipediaInput }),
+        body: JSON.stringify({ wikipedia_link: wikipediaInput }),
       });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        setWaiting(false);
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+  
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data.code);
+      } else if (response.status === 404) {
+        const data = await response.json();
+        alert(data.message);
+      } else {
+        throw new Error(`Request failed with status ${response.status}`);
       }
-      setResult(data.code);
-      setSandboxRunning(true);
-      setWaiting(false);
     } catch(error) {
       console.error(error);
       alert(error.message);
+    } finally {
       setWaiting(false);
     }
   }
-
 
 
   const [selectPrompt,setselectPrompt] = useState(""); //for selecting prompt in Remix
