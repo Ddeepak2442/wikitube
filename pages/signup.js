@@ -1,8 +1,12 @@
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 import bcrypt from 'bcryptjs';
 
 const SignUp = () => {
+    const router = useRouter();
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -75,6 +79,7 @@ const SignUp = () => {
       // Handle the response from your backend
       const result = await response.json();
       if (result.success) {
+        router.push('/main');
         console.log('User registered:', result);
         // Redirect to login page or dashboard as needed
       } else {

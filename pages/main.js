@@ -7,9 +7,12 @@ import Header from "./components/Header";
 import ImageUploader from "./components/ImageUploader";
 import WikipediaInput from "./components/WikipediaInput";
 
+import { useRouter } from 'next/router';
 
 
 export default function Home() {
+
+  
   const [result, setResult] = useState("// type a text prompt or provide flashcard above and click 'Generate Microsim'");
   const [textInput, setTextInput] = useState("");
   const [waiting, setWaiting] = useState(false);
