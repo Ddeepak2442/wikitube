@@ -11,6 +11,7 @@
     "@codemirror/lang-javascript": "^6.1.7",
     "@uiw/react-codemirror": "^4.19.16",
     "@vercel/analytics": "^1.0.0",
+    "bcryptjs": "^2.4.3",
     "browser-image-compression": "^2.0.2",
     "canvas": "^2.11.2",
     "cors": "^2.8.5",
