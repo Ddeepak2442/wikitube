@@ -60,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
       if (res.data.message) {
         setLoading(false);
-        router.push("/main");
+        router.push("/login");
       }
     } catch (error) {
       console.log(error.response);

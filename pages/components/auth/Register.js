@@ -23,7 +23,7 @@ const Register = () => {
     }
 
     if (isAuthenticated && !loading) {
-      router.push("/main");
+      router.push("/login");
     }
   }, [isAuthenticated, error, loading]);
 
