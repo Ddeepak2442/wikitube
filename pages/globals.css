@@ -7,3 +7,43 @@
         @apply w-full flex justify-center;
     }
 }
+
+.navWrapper {
+    min-width: 100%;
+    background: #fff;
+    padding: 10px 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+      rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  }
+  .navContainer {
+    width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 auto;
+  }
+  
+  .logoWrapper {
+    font-family: "Parisienne", cursive;
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .logoImgWrapper {
+    width: 27px;
+    display: flex;
+    margin-right: 10px;
+  }
+  .logo1 {
+    color: var(--primary);
+  }
+  .logo2 {
+    color: #618dd4;
+  }
+  
+  .btnsWrapper {
+    display: flex;
+  }
+  

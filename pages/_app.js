@@ -1,14 +1,11 @@
-import './globals.css'
-// import { SessionProvider } from "next-auth/react";
-import { Analytics } from '@vercel/analytics/react';
+import "./globals.css"
+import { AuthProvider } from "../context/AuthContext";
+
 
 export default function App({ Component, pageProps }) {
   return (
-    // <SessionProvider session={pageProps.session}>
-      <>
-        <Component {...pageProps} />
-        <Analytics />
-      </>
-    // </SessionProvider>
+    <AuthProvider>
+        <Component {...pageProps} />   
+     </AuthProvider>
   );
 }
