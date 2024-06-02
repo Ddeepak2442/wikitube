@@ -3,19 +3,11 @@ import { useState, useCallback, useEffect } from "react";
 import TextInput from "./components/TextInput";
 import Editor from "./components/Editor";
 import RunContainer from "./components/RunContainer";
-// import Header from "./components/Header";
+import Header from "./components/Header";
 import ImageUploader from "./components/ImageUploader";
 import WikipediaInput from "./components/WikipediaInput";
-<<<<<<< HEAD
-import Summary from './components/summary'
 
 import { useRouter } from 'next/router';
-import SearchInput, { SearchInputSm } from "./components/SearchInput";
-=======
-import Header from "./components/layout/Header";
-import Layout from "./components/layout/Layout";
-
->>>>>>> 57b06fa721a4e08abf98f2a23be381b7a187a19e
 
 
 export default function Home({ }) {
@@ -508,48 +500,48 @@ export default function Home({ }) {
 
 
   // wikipedia code
-  // const [wikipediaInput,setwikipediaInput] = useState("");
-  // const [wikipediaPrompt,setwikipediaPrompt]=useState(false);
+  const [wikipediaInput,setwikipediaInput] = useState("");
+  const [wikipediaPrompt,setwikipediaPrompt]=useState(false);
 
   
-  // function wikipediaInputChange(event) {
-  //   event.preventDefault();
-  //   setwikipediaInput(event.target.value);
-  // }
+  function wikipediaInputChange(event) {
+    event.preventDefault();
+    setwikipediaInput(event.target.value);
+  }
 
   
-  // async function wikipediaInputSubmit(event) {
-  //   event.preventDefault();
-  //   setlogMsg("");
-  //   setWaiting(true);
-  //   setwikipediaPrompt(true);
-  //   setResult("// Please be patient, this may take a while...");
-  //   setSelVal("");
-  //   try {
-  //     const response = await fetch('/api/checkWikipediaLink', {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({ wikipedia_link: wikipediaInput }),
-  //     });
+  async function wikipediaInputSubmit(event) {
+    event.preventDefault();
+    setlogMsg("");
+    setWaiting(true);
+    setwikipediaPrompt(true);
+    setResult("// Please be patient, this may take a while...");
+    setSelVal("");
+    try {
+      const response = await fetch('/api/checkWikipediaLink', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ wikipedia_link: wikipediaInput }),
+      });
   
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setResult(data.code);
-  //     } else if (response.status === 404) {
-  //       const data = await response.json();
-  //       alert(data.message);
-  //     } else {
-  //       throw new Error(`Request failed with status ${response.status}`);
-  //     }
-  //   } catch(error) {
-  //     console.error(error);
-  //     alert(error.message);
-  //   } finally {
-  //     setWaiting(false);
-  //   }
-  // }
+      if (response.ok) {
+        const data = await response.json();
+        setResult(data.code);
+      } else if (response.status === 404) {
+        const data = await response.json();
+        alert(data.message);
+      } else {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+    } catch(error) {
+      console.error(error);
+      alert(error.message);
+    } finally {
+      setWaiting(false);
+    }
+  }
 
 
   const [selectPrompt,setselectPrompt] = useState(""); //for selecting prompt in Remix
@@ -825,13 +817,13 @@ export default function Home({ }) {
   }
 
   return (
-    <Layout title="Workspace">
+    <>
+      <Head>
+        <title>MicroSim</title>
+        <meta name="description" content="Turn text into p5.js code using GPT and display it" />
+      </Head>
       <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl">
-<<<<<<< HEAD
         <Header />
-        <SearchInputSm/>
-=======
->>>>>>> 57b06fa721a4e08abf98f2a23be381b7a187a19e
         <div className="flex flex-col gap-4 2xl:flex-row w-full">
           <div className="flex flex-col gap-4 2xl:w-1/2">
             <TextInput key="textinput-01" textInput={textInput} onChange={textInputChange} onSubmit={textInputSubmit} waiting={waiting} selectVal={selVal} selectChange={textSelectChange} TextPrompt={TextPrompt} egArray={egArray}/>
@@ -850,10 +842,9 @@ export default function Home({ }) {
               selectPrompt={selectPrompt}
               PromptChange={PromptChange}
             />
-            {/* <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} /> */}
+            <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} />
           
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
-            <Summary />
             {/* Conditionally render the Save button */}
             {analysisresult && (
         <button
@@ -864,20 +855,14 @@ export default function Home({ }) {
           {isSaved ? 'Saved to Database' : 'Save'} {/* Change button text based on isSaved state */}
         </button>
       )}
-<<<<<<< HEAD
       </div>
 
-
             
-=======
-      </div>            
->>>>>>> 57b06fa721a4e08abf98f2a23be381b7a187a19e
           <div className="flex flex-col gap-4 2xl:w-1/2">
             <RunContainer key="runcont-01" sandboxRunning={sandboxRunning} clickPlay={runClickPlay} clickStop={runClickStop} result={result} logMsg={logMsg} waiting={waiting}/>
           </div>
-          
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

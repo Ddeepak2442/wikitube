@@ -29,7 +29,7 @@ const ForgotPassword = () => {
                 required
               />
             </div>
-            <Link href="/" className="block text-right text-blue-500 mb-3 ">
+            <Link href="/login" className="block text-right text-blue-500 mb-3 ">
               Got password? Login
             </Link>
             <div className="mb-6">
@@ -43,7 +43,7 @@ const ForgotPassword = () => {
           </form>
           <p className="text-center">
             Don't Have Account?{' '}
-            <Link href="/signup" className="text-blue-500">
+            <Link href="/register" className="text-blue-500">
               Sign Up
             </Link>
           </p>
