@@ -21,7 +21,7 @@ const Login = () => {
     }
 
     if (isAuthenticated && !loading) {
-      router.push("/main");
+      router.push("/main-old");
     }
   }, [isAuthenticated, error, loading]);
 
@@ -66,9 +66,9 @@ const Login = () => {
                 required
               />
             </div>
-            <div className="mb-4 flex items-center">
+            {/* <div className="mb-4 flex items-center">
               <Link href="/ForgotPassword" className="ml-auto text-sm text-blue-500">Forgot Password?</Link>
-            </div>
+            </div> */}
             
             <button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-700 text-white py-2 rounded-lg  transition duration-300">
                   {loading ? "Authenticating..." : "Login"}

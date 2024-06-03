@@ -8,7 +8,8 @@ import ImageUploader from "./components/ImageUploader";
 import WikipediaInput from "./components/WikipediaInput";
 import { SearchInputSm } from "./components/SearchInput";
 import { useRouter } from 'next/router';
-import Summary from './components/Summary'
+import Summmary from './components/Summary'
+import Mcq from "./components/mcq";
 
 export default function Home({ }) {
 
@@ -20,6 +21,7 @@ export default function Home({ }) {
   const [logMsg, setlogMsg] = useState("");
   const [selVal, setSelVal] = useState("");
   const [TextPrompt,setTextPrompt] = useState(false);
+  const [generateMcq,setGenerateMcq] =  useState(false)
   
   const egArray = [
     {
@@ -498,6 +500,10 @@ export default function Home({ }) {
     }
   }
 
+  function handleGenerateMcq (event){
+    event.preventDefault();
+    setGenerateMcq(true);
+  }
 
   // wikipedia code
   // const [wikipediaInput,setwikipediaInput] = useState("");
@@ -823,7 +829,7 @@ export default function Home({ }) {
         <meta name="description" content="Turn text into p5.js code using GPT and display it" />
       </Head>
       <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl">
-        <Header />
+        <Header  />
         <SearchInputSm/>
         <div className="flex flex-col gap-4 2xl:flex-row w-full">
           <div className="flex flex-col gap-4 2xl:w-1/2">
@@ -844,7 +850,8 @@ export default function Home({ }) {
               PromptChange={PromptChange}
             />
             {/* <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} /> */}
-            <Summary/>
+            <Summmary onClick={handleGenerateMcq}/>
+            {generateMcq && <Mcq/>}
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
             {/* Conditionally render the Save button */}
             {analysisresult && (

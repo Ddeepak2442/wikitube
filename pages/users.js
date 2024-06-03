@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Mcq from './components/mcq';
 
 const UsersPage = () => {
   const [users, setUsers] = useState([]);
@@ -52,7 +53,11 @@ const UsersPage = () => {
           ))}
         </tbody>
       </table>
+
+      <Mcq/>
     </div>
+
+
   );
 };
 

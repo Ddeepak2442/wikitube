@@ -3,8 +3,8 @@ import Register from "./components/auth/Register";
 
 export default function RegisterPage() {
   return (
-    <Layout title="Register">
+    < div title="Register">
       <Register />
-    </Layout>
+    </div>
   );
 }

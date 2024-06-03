@@ -10,6 +10,8 @@ const Register = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword,setConfirmPasswordPassword] = useState("")
+  const [Passerror, setPassError] = useState('');
 
   const router = useRouter();
 
@@ -29,12 +31,20 @@ const Register = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    register({ firstName, lastName, email, password });
+    register({ firstName, lastName, email, password,confirmPassword, });
+
+    if (password !== confirmPassword) {
+      setPassError('Passwords do not match');
+    } else {
+      setPassError('');
+      // Handle the form submission (e.g., send data to server)
+      console.log('Passwords match');
+    }
   };
 
   return (
     <main className='p-20 text-center'>
-      <div className="flex flex-col mb-5">
+      <div className="flex flex-col mb-5 ">
         <h1 className="text-2xl font-medium">MicroSim</h1>
         <div className="text-xs italic">
           <span className="italic text-neutral-950">Powered by </span>
@@ -70,6 +80,27 @@ const Register = () => {
                 </div>
               </div>
 
+              <div className="mb-4 flex justify-between">
+                <div className="w-1/2 mr-1">
+                <select 
+            name="Gender" 
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            >
+              <option value="">Gender</option>
+              <option value="">Male</option>
+              <option value="">Female</option>
+              <option value="">Others</option>
+          </select>
+                </div>
+                <div className="w-1/2 ml-1">
+                  <input type="date"
+                  name="dob"
+                  required
+                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  />
+                </div>
+              </div>
+
               <div className="mb-4">
                 <input type="email"
                 name="email"
@@ -92,6 +123,22 @@ const Register = () => {
                 minLength={8}
                 required
                 />
+            </div>
+          
+            <div className="mb-4">
+                <input type="password"
+                name="password"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPasswordPassword(e.target.value)}
+                minLength={8}
+                required
+                />
+
+                <div>
+                {Passerror && <p className="text-red-500">{Passerror}</p>}
+                </div>
             </div>
               <button type="submit" className="bg-emerald-500 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded w-full">
                   {loading ? "Loading..." : "Register"}

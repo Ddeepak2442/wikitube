@@ -848,7 +848,7 @@ export default function Home({ }) {
             {/* <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} /> */}
           
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
-            <Summary />
+            <Summary  key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
             {/* Conditionally render the Save button */}
             {analysisresult && (
         <button
