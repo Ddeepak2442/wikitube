@@ -11,8 +11,9 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword,setConfirmPasswordPassword] = useState("")
+  const [dateOfBirth,setDateOfBirth] = useState("")
   const [Passerror, setPassError] = useState('');
-
+  const [gender,setGender] = useState('');
   const router = useRouter();
 
   const { loading, error, isAuthenticated, register, clearErrors } =
@@ -29,10 +30,15 @@ const Register = () => {
     }
   }, [isAuthenticated, error, loading]);
 
+
+  const handleSelectChange = (e) => {
+    setGender(e.target.value);
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
-    register({ firstName, lastName, email, password,confirmPassword, });
-
+    register({ firstName, lastName,dateOfBirth,gender,email, password});
+        console.log(gender)
     if (password !== confirmPassword) {
       setPassError('Passwords do not match');
     } else {
@@ -84,17 +90,21 @@ const Register = () => {
                 <div className="w-1/2 mr-1">
                 <select 
             name="Gender" 
+            value={gender}
+            onChange={handleSelectChange}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
-              <option value="">Gender</option>
-              <option value="">Male</option>
-              <option value="">Female</option>
-              <option value="">Others</option>
+              <option value="" disabled>Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
           </select>
                 </div>
                 <div className="w-1/2 ml-1">
                   <input type="date"
-                  name="dob"
+                  name="dateOfBirth"
+                  value ={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
                   required
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   />
