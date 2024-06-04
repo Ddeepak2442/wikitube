@@ -27,8 +27,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
 
       const res = await axios.post("/api/auth/login", {
-        email,
-        password,
+        username,password,
       });
 
       if (res.data.success) {
@@ -56,8 +55,8 @@ export const AuthProvider = ({ children }) => {
         last_name: lastName,
         date_of_birth:dateOfBirth,
         gender:gender,
-        email:email,
-        password:password
+        email,
+        password
       });
 
       if (res.data.message) {
@@ -76,7 +75,7 @@ export const AuthProvider = ({ children }) => {
 
   // Update user
   const updateProfile = async (
-    { firstName, lastName, email, password },
+    { firstName, lastName,dateOfBirth,gender,email, password},
     access_token
   ) => {
     try {
@@ -86,9 +85,11 @@ export const AuthProvider = ({ children }) => {
         `${process.env.API_URL}/api/me/update/`,
         {
           first_name: firstName,
-          last_name: lastName,
-          email,
-          password,
+        last_name: lastName,
+        date_of_birth:dateOfBirth,
+        gender:gender,
+        email,
+        password
         },
         {
           headers: {

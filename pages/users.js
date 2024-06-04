@@ -54,7 +54,6 @@ const UsersPage = () => {
         </tbody>
       </table>
 
-      <Mcq/>
     </div>
 
 
