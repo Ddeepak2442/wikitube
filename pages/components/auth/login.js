@@ -11,10 +11,10 @@ const Login = () => {
 
   const router = useRouter();
 
-  const { loading, error, isAuthenticated, login, clearErrors } =
-    useContext(AuthContext);
-
-  useEffect(() => {
+    const { loading, error, isAuthenticated, login, clearErrors } = useContext(AuthContext);
+    
+    useEffect(() => {
+      
     if (error) {
       toast.error(error);
       clearErrors();
@@ -23,12 +23,15 @@ const Login = () => {
     if (isAuthenticated && !loading) {
       router.push("/main-old");
     }
+        
+
   }, [isAuthenticated, error, loading]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    login({ username: email, password });
+    login({ username: email, password});
   };
+
 
   return (
     <main className='p-20 text-center'>

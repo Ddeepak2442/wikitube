@@ -773,11 +773,19 @@ export default function Home({ }) {
     let ranOnce = false;
 
     const handler = event => {
-      const data = JSON.parse(event.data)
+      let data;
+      try {
+        data = JSON.parse(event.data);
+      } catch (error) {
+        console.error("Error parsing JSON data:", error);
+        return;
+      }
+    
       if (!ranOnce) {
         setlogMsg(data.logMsg);
         ranOnce = true;
-      } else {
+      }
+    else {
         setlogMsg(msg => msg + '\n' + data.logMsg);
       }
     }
@@ -823,7 +831,7 @@ export default function Home({ }) {
   }
 
   return (
-    <Layout title="Workspace">
+
       <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl">
         <Header />
         <SearchInputSm/>
@@ -865,6 +873,6 @@ export default function Home({ }) {
           </div>
         </div>
       </div>
-    </Layout>
+
   );
 }

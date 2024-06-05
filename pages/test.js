@@ -81,11 +81,19 @@ export default function Test() {
     let ranOnce = false;
 
     const handler = event => {
-      const data = JSON.parse(event.data)
+      let data;
+      try {
+        data = JSON.parse(event.data);
+      } catch (error) {
+        console.error("Error parsing JSON data:", error);
+        return;
+      }
+    
       if (!ranOnce) {
         setlogMsg(data.logMsg);
         ranOnce = true;
-      } else {
+      }
+     else {
         setlogMsg(msg => msg + '\n' + data.logMsg);
       }
     }
