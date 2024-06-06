@@ -271,7 +271,7 @@ export default AuthContext;
 //     try {
 //       setLoading(true);
 
-//       const res = await axios.post(`${process.env.API_URL}/api/register`, {
+//       const res = await axios.post(${process.env.API_URL}/api/register, {
 //         first_name: firstName,
 //         last_name: lastName,
 //         email,
@@ -301,7 +301,7 @@ export default AuthContext;
 //       setLoading(true);
 
 //       const res = await axios.put(
-//         `${process.env.API}/api/me/update/`,
+//         ${process.env.API}/api/me/update/,
 //         {
 //           first_name: firstName,
 //           last_name: lastName,
@@ -310,7 +310,7 @@ export default AuthContext;
 //         },
 //         {
 //           headers: {
-//             Authorization: `Bearer ${access_token}`,
+//             Authorization: Bearer ${access_token},
 //           },
 //         }
 //       );
@@ -335,11 +335,11 @@ export default AuthContext;
 //       setLoading(true);
 
 //       const res = await axios.put(
-//         `${process.env.API}/api/upload/resume`,
+//         ${process.env.API}/api/upload/resume,
 //         formData,
 //         {
 //           headers: {
-//             Authorization: `Bearer ${token}`,
+//             Authorization: Bearer ${token},
 //           },
 //         }
 //       );
