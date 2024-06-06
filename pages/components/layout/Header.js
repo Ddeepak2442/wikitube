@@ -1,70 +1,108 @@
+import {
+  Button,
+  Disclosure,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+  Transition,
+} from '@headlessui/react'
 import React, { useContext } from "react";
 import Link from "next/link";
-import Image from "next/image";
-
+import { UserCircleIcon } from '@heroicons/react/24/outline'
+import SearchInput from '../SearchInput'
 import AuthContext from "../../../context/AuthContext";
 
-const Header = () => {
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ')
+}
+
+export default function Example() {
   const { loading, user, logout } = useContext(AuthContext);
 
   const logoutHandler = () => {
     logout();
-  };
-
+  }
   return (
-    <div className="navWrapper">
-      <div className="navContainer">
-        <Link href="/">
-          <div className="logoWrapper">
-            {/* <div className="logoImgWrapper">
-              <Image width="50" height="50" src="/images/logo.png" alt="" />
-            </div> */}
-            <span className="logo1">Wikitube</span>
-          </div>
-        </Link>
-        <div className="btnsWrapper">
-          {user ? (
-            <div className="dropdown ml-3">
-              <p
-                className="btn dropdown-toggle mr-4"
-                id="dropDownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <span>Hi, {user.first_name}</span>{" "}
-              </p>
-
-              <div
-                className="dropdown-menu"
-                aria-labelledby="dropDownMenuButton"
-              >
-                <Link href="/me">
-                  <p className="dropdown-item">Profile</p>
-                </Link>                
-                <Link href="/">
-                  <p
-                    className="dropdown-item text-danger"
-                    onClick={logoutHandler}
-                  >
-                    Logout
-                  </p>
-                </Link>
+    <Disclosure as="nav" className="bg-white-800">
+      {({ open }) => (
+        <>
+            <div className="relative flex h-16 items-center justify-between">
+              <div className="flex flex-1 items-center justify-left">
+                <div className="flex  flex-col flex-shrink-0 items-center">
+                <h1 className="text-2xl font-medium ">MicroSim</h1>
+                <div className="text-xs italic">
+                <span className="italic text-neutral-950">Powered by </span>
+                <span className="italic text-neutral-950">Execubots</span>
+                </div>
+                </div>
+                
               </div>
-            </div>
-          ) : (
+
+              <SearchInput/>
+
+              {/* condition If logined shows profile Icon else login Button */}
+              {user ? (
+                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                {/* Profile dropdown */}
+                <Menu as="div" className="relative ">
+                  <div>
+                    <MenuButton className="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 hover:bg-emerald-100">
+                       <UserCircleIcon className="h-10 w-10 text-emerald-600" aria-hidden="true" />
+                    </MenuButton>
+                  </div>
+                  <Transition
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <MenuItem>
+                        {({ focus }) => (
+                          <Link
+                           href='' 
+                            className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-800 ')}
+                          >
+                            {user.first_name}
+                          </Link>
+                        )}
+                      </MenuItem>
+                      <MenuItem>
+                        {({ focus }) => (
+                          <Link
+                          
+                          onClick={logoutHandler}
+                          href="/login"
+                          className={classNames(focus ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-800')
+                              
+                            }
+                          >
+                            Log out
+                          
+                          </Link>
+                        )}
+                      </MenuItem>
+                    </MenuItems>
+                  </Transition>
+                </Menu>
+              </div> ): (
             !loading && (
               <Link href="/login">
-                <button className="loginButtonHeader">
-                  <span>Login</span>
-                </button>
+                <div className=" absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                
+                <button className='bg-emerald-500 hover:bg-emerald-700 p-2 rounded w-full text-white text-sm px-3 cursor-pointer'>Login</button>
+                </div>
               </Link>
             )
           )}
-        </div>
-      </div>
-    </div>
-  );
-};
+            </div>
 
-export default Header;
+        </>
+      )}
+      
+    </Disclosure>
+  )
+}

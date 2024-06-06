@@ -21,7 +21,7 @@ const Login = () => {
     }
 
     if (isAuthenticated && !loading) {
-      router.push("/main-old");
+      router.push("/main");
     }
         
 
