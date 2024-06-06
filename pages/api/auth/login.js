@@ -7,7 +7,7 @@ export default async (req, res) => {
 
     try {
       const response = await axios.post(
-        `${process.env.API_URL}/api/token`,
+        `${process.env.API_URL}/api/token/`,
         {
           username,
           password,
