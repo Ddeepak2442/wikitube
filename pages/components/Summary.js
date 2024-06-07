@@ -1,6 +1,6 @@
 
 
-export default function Summary({onClick}){
+export default function Summary({onClick,result}){
 
   return (
     <div className="rounded-md border border-gray-100 shadow-md shadow-emerald-600/30 bg-white p-3">
@@ -12,6 +12,7 @@ export default function Summary({onClick}){
         disabled:border-gray-300 disabled:text-gray-600 disabled:bg-gray-100"
           type="text"
           name="summary"
+          value={result}
         />
 
           <button className="bg-emerald-500 p-2 rounded w-full text-white text-sm px-3 cursor-pointer"  onClick={onClick}>Generate Mcq</button>

@@ -60,7 +60,7 @@ export default async function (req, res) {
       messages:[
           {
             "role": "user", 
-            "content": `Do not explain, answer only in code. You are converting user text input into p5.js code. Your response must start with 'function setup() {' or 'const' or 'let'. Your response must include 'function setup()' and 'function draw()'. This is the user text input: ${prompt}`
+            "content": `Do not explain, answer only in code . You are converting user text input into p5.js code. Your response must start with 'function setup() {' or 'const' or 'let'. Your response must include 'function setup()' and 'function draw()'. This is the user text input: ${prompt}`
           }
         ]
     });

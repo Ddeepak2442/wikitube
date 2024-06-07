@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect,useContext, use } from "react";
 import TextInput from "./components/TextInput";
 import Editor from "./components/Editor";
 import RunContainer from "./components/RunContainer";
@@ -12,12 +12,14 @@ import SearchInput, { SearchInputSm } from "./components/SearchInput";
 
 import Header from "./components/layout/Header";
 import Layout from "./components/layout/Layout";
+import AuthContext from "../context/AuthContext";
 
 
 
 
 export default function Home({ }) {
 
+  const { user } = useContext(AuthContext);
   
   const [result, setResult] = useState("// type a text prompt or provide flashcard above and click 'Generate Microsim'");
   const [textInput, setTextInput] = useState("");
@@ -26,7 +28,8 @@ export default function Home({ }) {
   const [logMsg, setlogMsg] = useState("");
   const [selVal, setSelVal] = useState("");
   const [TextPrompt,setTextPrompt] = useState(false);
-  
+
+  const [summaryResult,setSummaryResult] = useState('Summary')
   const egArray = [
     {
       value: "Conway's Game of Life",
@@ -479,6 +482,7 @@ export default function Home({ }) {
     setWaiting(true);
     setTextPrompt(true);
     setResult("// Please be patient, this may take a while...");
+    setSummaryResult('...')
     setSelVal("");
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_REMOTE_API_URL || ''}/api/generate`, {
@@ -495,6 +499,7 @@ export default function Home({ }) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
       setResult(data.code);
+      setSummaryResult(data.summary);
       setSandboxRunning(true);
       setWaiting(false);
     } catch(error) {
@@ -505,7 +510,7 @@ export default function Home({ }) {
   }
 
 
-  // wikipedia code
+  // //wikipedia code
   // const [wikipediaInput,setwikipediaInput] = useState("");
   // const [wikipediaPrompt,setwikipediaPrompt]=useState(false);
 
@@ -534,7 +539,7 @@ export default function Home({ }) {
   
   //     if (response.ok) {
   //       const data = await response.json();
-  //       setResult(data.code);
+  //       setResult(data.summary);
   //     } else if (response.status === 404) {
   //       const data = await response.json();
   //       alert(data.message);
@@ -558,7 +563,7 @@ export default function Home({ }) {
   const [statusMessage, setStatusMessage] = useState(''); // Displays status messages to the user
   const [dragOver, setDragOver] = useState(false); // UI state for drag-and-drop
   const [base64Image, setBase64Image] = useState('');
-
+  const [generateMcq,setGenerateMcq] = useState(false)
   
   const Remix = [
     {
@@ -600,6 +605,8 @@ export default function Home({ }) {
     event.preventDefault();
     setWaiting(true);
     setResult("// Please be patient, this may take a while...");
+    setSummaryResult('...')
+    setTextInput('')
     if (!file) {
       setStatusMessage('No file selected!');
       return;
@@ -632,7 +639,9 @@ export default function Home({ }) {
           setUploadProgress(100);
           const analysisObject = JSON.parse(apiResponse.analysis); 
           const coderesult = analysisObject.code; 
+          const summaryResultView = analysisObject.summary;
           setResult(coderesult);
+          setSummaryResult(summaryResultView)
           setSandboxRunning(true);
           setWaiting(false);
         } else {
@@ -658,26 +667,32 @@ export default function Home({ }) {
   
     // Parse the analysisresult JSON string into an object
     const analysisObject = JSON.parse(analysisresult);
+    const userWithEmail = (user.email)
     
   
     try {
       // Prepare the payload with the parsed data and the SVG
       const payload = {
-        prompt_name: analysisObject.prompt_name,
-        prompt: analysisObject.prompt,
-        wikipedia_link: analysisObject.wikipedia_link,
-        code: analysisObject.code,
-        imageBase64: base64Image
+        Prompt_title: analysisObject.prompt_title,
+        Prompt: analysisObject.prompt,
+        Wikipedia_link: analysisObject.wikipedia_link,
+        Code: analysisObject.code,
+        Summary:analysisObject.summary,
+        User:userWithEmail
+        // imageBase64: base64Image
         // flashcard_svg: svgData // This should be the SVG data as a string
       };
-  
+
+      console.log(JSON.stringify(payload))
+      
       // Send the payload to your backend for saving to the database
-      const response = await fetch('/api/savePrompt', {
+      const response = await fetch('http://127.0.0.1:8000/api/create-prompt/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
+      
       });
   
       if (response.ok) {
@@ -774,17 +789,23 @@ export default function Home({ }) {
 
     const handler = event => {
       let data;
-      try {
-        data = JSON.parse(event.data);
-      } catch (error) {
-        console.error("Error parsing JSON data:", error);
-        return;
-      }
-    
-      if (!ranOnce) {
-        setlogMsg(data.logMsg);
-        ranOnce = true;
-      }
+try {
+  if (typeof event.data === "string") {
+    data = JSON.parse(event.data);
+  } else {
+    // console.error("Received data is not a string:", event.data);
+    return;
+  }
+} catch (error) {
+  console.error("Error parsing JSON data:", error);
+  return;
+}
+
+if (!ranOnce) {
+  setlogMsg(data.logMsg);
+  ranOnce = true;
+}
+
     else {
         setlogMsg(msg => msg + '\n' + data.logMsg);
       }
@@ -830,6 +851,12 @@ export default function Home({ }) {
     }
   }
 
+
+  function handleGenerateMcq (event){
+    event.preventDefault();
+    setGenerateMcq(true);
+  }
+
   return (
 
       <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl">
@@ -856,7 +883,7 @@ export default function Home({ }) {
             {/* <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} /> */}
           
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
-            <Summary  key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
+            <Summary  key="summary-01" result={summaryResult} onClick={handleGenerateMcq}/>
             {/* Conditionally render the Save button */}
             {analysisresult && (
         <button
