@@ -14,7 +14,7 @@ import Header from "./components/layout/Header";
 import Layout from "./components/layout/Layout";
 import AuthContext from "../context/AuthContext";
 
-
+import Mcq from "./components/mcq";
 
 
 export default function Home({ }) {
@@ -529,12 +529,12 @@ export default function Home({ }) {
     setResult("// Please be patient, this may take a while...");
     setSelVal("");
     try {
-      const response = await fetch('/api/checkWikipediaLink', {
-        method: "POST",
+      const response = await fetch(`${process.env.API_URL}/api/create-prompt/`, {
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ wikipedia_link: wikipediaInput }),
+        body: JSON.stringify({ Wikipedia_link: wikipediaInput }),
       });
   
       if (response.ok) {
@@ -860,8 +860,8 @@ if (!ranOnce) {
   return (
 
       <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl">
-        <Header />
-        <SearchInputSm/>
+        <Header  />
+        <SearchInputSm key="wikipediainput-02" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt}/>
         <div className="flex flex-col gap-4 2xl:flex-row w-full">
           <div className="flex flex-col gap-4 2xl:w-1/2">
             <TextInput key="textinput-01" textInput={textInput} onChange={textInputChange} onSubmit={textInputSubmit} waiting={waiting} selectVal={selVal} selectChange={textSelectChange} TextPrompt={TextPrompt} egArray={egArray}/>
@@ -882,8 +882,10 @@ if (!ranOnce) {
             />
             {/* <WikipediaInput key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt} /> */}
           
+            
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
             <Summary  key="summary-01" result={summaryResult} onClick={handleGenerateMcq}/>
+            {generateMcq && <Mcq/>}
             {/* Conditionally render the Save button */}
             {analysisresult && (
         <button
