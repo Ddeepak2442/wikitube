@@ -87,7 +87,9 @@ function ImageUploader(props) {
             Generate MicroSim
           </button>
         ) : (
-          <progress value={uploadProgress} max="100" className="w-1/2"></progress>
+          <progress value={uploadProgress} max="100" className="w-1/2">
+           
+          </progress>
         )}
       </div>
     </div>

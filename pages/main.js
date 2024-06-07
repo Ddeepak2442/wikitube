@@ -634,6 +634,10 @@ export default function Home({ }) {
         setUploadProgress(80);
 
         if (apiResponse.success) {
+          // alert("Success See The code")
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 1000);
           setanalysisResult(apiResponse.analysis);
           setStatusMessage('Analysis complete.');
           setUploadProgress(100);
@@ -646,14 +650,26 @@ export default function Home({ }) {
           setWaiting(false);
         } else {
           setStatusMessage(apiResponse.message);
+          alert(`HTTP error! status: ${response.status}`);
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+          
         }
       } catch (error) {
         console.error(error);
         setStatusMessage('Error parsing response.');
+        alert('Requested Failed ! Please Reupload the file.')
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
     } else {
       // Handle the case where the response status is not in the OK range
-      setStatusMessage(`HTTP error! status: ${response.status}`);
+      alert(`HTTP error! status: ${response.status}`);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
   
