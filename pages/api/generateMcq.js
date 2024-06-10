@@ -41,32 +41,31 @@ export default async function (req, res) {
     return;
   }
 
-  const prompt = req.body.prompt || '';
-  if (prompt.trim().length === 0) {
+  const summary = req.body.summary || '';
+  if (summary.trim().length === 0) {
     res.status(400).json({
       error: {
-        message: "Please enter a valid prompt",
+        message: "Please enter a valid summary",
       }
     });
     return;
   }
 
-  console.log('User prompt:', prompt);
+  console.log('User summary:', summary);
 
   try {
     const completion = await openai.chat.completions.create({
       // model:"gpt-3.5-turbo",
       model:"gpt-3.5-turbo",
-      messages:[
-          {
-            "role": "user", 
-            "content": `Do not explain, answer only in code . You are converting user text input into p5.js code. Your response must start with 'function setup() {' or 'const' or 'let'. Your response must include 'function setup()' and 'function draw()'. This is the user text input: ${prompt}`
-          }
-        ]
+  messages:[
+    {"role": "system", "content": "You are a helpful assistant to give response as json."},
+    {"role": "user", "content": `${summary}`},
+    {"role": "assistant", "content": "Generate 2 MCQs using the above-given content.  Exact Format the output as follows: \n// const questions = [\n  {\n    question: \"Question text\",\n    options: [\n      \"Option A\",\n      \"Option B\",\n      \"Option C\",\n      \"Option D\"\n    ],\n    correctAnswer: \"optionX\"\n  },\n];dont go beyond the content"},
+  ]
     });
   console.log(completion); 
-  console.log("Sent: " + completion.choices[0].message.content);
-  res.status(200).json({ code: completion.choices[0].message.content});
+  console.log("mcq: " + completion.choices[0].message.content);
+  res.status(200).json({  mcq: completion.choices[0].message.content});
   } catch(error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {

@@ -1,5 +1,4 @@
 import {
-  Button,
   Disclosure,
   Menu,
   MenuButton,
@@ -7,6 +6,7 @@ import {
   MenuItems,
   Transition,
 } from '@headlessui/react'
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useContext } from "react";
 import Link from "next/link";
 import { UserCircleIcon } from '@heroicons/react/24/outline'
@@ -17,7 +17,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Example({WikipediaInput, onChange, onSubmit, waiting}) {
   const { loading, user, logout } = useContext(AuthContext);
 
   const logoutHandler = () => {
@@ -29,17 +29,36 @@ export default function Example() {
         <>
             <div className="relative flex h-16 items-center justify-between">
               <div className="flex flex-1 items-center justify-left">
-                <div className="flex  flex-col flex-shrink-0 items-center">
+                <Link href='/'>
+                <div className="flex  flex-col flex-shrink-0 items-center hover:text-emerald-600">
                 <h1 className="text-2xl font-medium ">MicroSim</h1>
                 <div className="text-xs italic">
                 <span className="italic text-neutral-950">Powered by </span>
                 <span className="italic text-neutral-950">Execubots</span>
                 </div>
                 </div>
-                
+                </Link>
               </div>
 
-              <SearchInput/>
+              {/* <SearchInput/> */}
+              <form onSubmit={onSubmit}>
+        <div className='hidden md:flex rounded-lg items-center justify-center border-emerald-500 border-2'>
+            <input 
+                type='search' 
+                placeholder='Search With Wikipidea Link...' 
+                className='p-2 bg-transparent w-96' 
+                value={WikipediaInput}
+            onChange={onChange}
+            disabled={waiting} 
+            />
+            <button type='submit'>
+                <MagnifyingGlassIcon 
+                    className="h-6 w-6 text-emerald-600 ml-2 mr-2" 
+                    aria-hidden="true" 
+                /> 
+            </button>
+        </div>
+        </form>
 
               {/* condition If logined shows profile Icon else login Button */}
               {user ? (

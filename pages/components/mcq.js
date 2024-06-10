@@ -1,32 +1,83 @@
 import { useState } from "react";
 import Head from "next/head";
 
-export default function Mcq() {
+const input = {
+  "questions": [
+    {
+      "question": "What is the main purpose of medicine?",
+      "options": [
+        "Diagnosis, treatment, and prevention of illness and injury",
+        "Teaching about health and wellness",
+        "Exploring the human body's functions",
+        "Designing medical equipment"
+      ],
+      "correctAnswer": "Diagnosis, treatment, and prevention of illness and injury"
+    },
+    {
+      "question": "What does medicine aim at?",
+      "options": [
+        "Increasing life expectancy",
+        "Maintaining and restoring health",
+        "Curing all diseases",
+        "Improving physical performance"
+      ],
+      "correctAnswer": "Maintaining and restoring health"
+    }
+  ]
+};
+
+
+
+
+export default function Mcq({mcqResultView}) {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState('');
   const [result, setResult] = useState({ correct: '', wrong: '', rightAnswer: '' });
   const [displayCard, setDisplayCard] = useState(false);
+  // const questionsing = [mcqResultView][0]
+  //   const input = Object.entries(questionsing)
+  //   console.log(input)
 
   const onSubmit = () => {
-
-    setDisplayCard(true)
+    setDisplayCard(true);
     if (!selectedOption) {
       alert('Please select an option');
       return;
     }
 
-    if (selectedOption === 'optionD') {
+    const currentQuestion = input.questions[currentQuestionIndex];
+    if (selectedOption === currentQuestion.correctAnswer) {
       setResult({ correct: 'Correct Answer!', wrong: '', rightAnswer: '' });
     } else {
       setResult({
         correct: '',
         wrong: 'Wrong Answer!',
-        rightAnswer: 'Transmitting electrical signals between nerve cells - Option D',
+        rightAnswer: `${currentQuestion.correctAnswer} - Option ${String.fromCharCode(65 + currentQuestion.options.indexOf(currentQuestion.correctAnswer))}`
       });
     }
   };
+
+  const handleNextQuestion = () => {
+    setDisplayCard(false);
+    setSelectedOption('');
+    setResult({ correct: '', wrong: '', rightAnswer: '' });
+    if (currentQuestionIndex < input.questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  };
+
+  const handlePreviousQuestion = () => {
+    setDisplayCard(false);
+    setSelectedOption('');
+    setResult({ correct: '', wrong: '', rightAnswer: '' });
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
+    }
+  };
+
   return (
     <>
-       <Head>
+      <Head>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -34,113 +85,54 @@ export default function Mcq() {
       </Head>
 
       <div className="rounded-md border border-gray-100 shadow-md shadow-emerald-600/30 bg-white p-3 mt-4">
-      <div className="flex justify-between xs:mb-2">
-        <h3 className="font-semibold text-gray-500">Mcq</h3>
-      </div>
-      <div className="flex">
-        <div className="flex-1 p-4">
-          <div className="container mx-auto">
-            <div className="flex justify-center">
-              <div className="w-full">
-                <div className="flex justify-between shadow mt-3 p-2 bg-white">
-                  <button className="text-blue-600">
-                    <i className="bi bi-arrow-left-circle-fill text-2xl"></i>
-                  </button>
-                  <p className="pt-3">Question 1 of 20</p>
-                  <button className="text-blue-600">
-                    <i className="bi bi-arrow-right-circle-fill text-2xl"></i>
-                  </button>
-                </div>
-                <p className="pt-3">Which of the following is not a function of bones in the human body?</p>
-                <div className="bg-white shadow mt-4 p-4">
-                  <div className="form-check mb-2">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="option"
-                  id="optionA"
-                  value="optionA"
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                />
-                <label className="form-check-label" htmlFor="optionA">
-                  Providing structure and support
-                </label>
-              </div>
-
-              <div className="form-check mb-2">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="option"
-                  id="optionB"
-                  value="optionB"
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                />
-                <label className="form-check-label" htmlFor="optionB">
-                  Producing red blood cells
-                </label>
-              </div>
-
-              <div className="form-check mb-2">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="option"
-                  id="optionC"
-                  value="optionC"
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                />
-                <label className="form-check-label" htmlFor="optionC">
-                  Storing minerals such as calcium and phosphorus
-                </label>
-              </div>
-              <div className="form-check mb-2">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="option"
-                  id="optionD"
-                  value="optionD"
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                />
-                <label className="form-check-label" htmlFor="optionD">
-                  Transmitting electrical signals between nerve cells
-                </label>
-              </div>
-                  
-                </div>
-                <button className="bg-emerald-500 p-2 rounded w-full mt-4 text-white text-sm px-3 cursor-pointer" type="button" onClick={onSubmit}>Submit</button>
-              
-
-                {/* <div className="border border-gray-200 rounded-lg mb-4">
-                <button
-                  className="w-full p-4 text-left font-medium text-gray-700 bg-gray-100 rounded-lg focus:outline-none"
-                  onClick={() => setIsOpen(!isOpen)}
-                >
-                  {result.correct}
-                </button>
-                {isOpen && (
-                  <div className="p-4 text-gray-600">
-                    {<strong id="rightAnswer">{result.rightAnswer}</strong>}
+        <div className="flex justify-between xs:mb-2">
+          <h3 className="font-semibold text-gray-500">Mcq</h3>
+        </div>
+        <div className="flex">
+          <div className="flex-1 p-4">
+            <div className="container mx-auto">
+              <div className="flex justify-center">
+                <div className="w-full">
+                  <div className="flex justify-between shadow mt-3 p-2 bg-white">
+                    <button className="text-blue-600" onClick={handlePreviousQuestion}>
+                      <i className="bi bi-arrow-left-circle-fill text-2xl"></i>
+                    </button>
+                    <p className="pt-3">Question {currentQuestionIndex + 1} of {input.questions.length}</p>
+                    <button className="text-blue-600" onClick={handleNextQuestion}>
+                      <i className="bi bi-arrow-right-circle-fill text-2xl"></i>
+                    </button>
                   </div>
-                )}
-              </div> */}
+                  <p className="pt-3">{input.questions[currentQuestionIndex].question}</p>
+                  <div className="bg-white shadow mt-4 p-4">
+                    {input.questions[currentQuestionIndex].options.map((option, index) => (
+                      <div className="form-check mb-2" key={index}>
+                        <input
+                          className="form-check-input"
+                          type="radio"
+                          name="option"
+                          id={`option${String.fromCharCode(65 + index)}`}
+                          value={option}
+                          onChange={(e) => setSelectedOption(e.target.value)}
+                        />
+                        <label className="form-check-label" htmlFor={`option${String.fromCharCode(65 + index)}`}>
+                          {option}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="bg-emerald-500 p-2 rounded w-full mt-4 text-white text-sm px-3 cursor-pointer" type="button" onClick={onSubmit}>Submit</button>
 
-                {displayCard && <div className="bg-white rounded-lg shadow p-3 mt-4 ">
-                <p id="correct" className=" text-green-400">{result.correct}</p>
-                <p id="wrong" className=" text-red-400">{result.wrong}</p>
-                <strong id="rightAnswer"className="text-green-400">{result.rightAnswer}</strong>
-                </div>}
-              
+                  {displayCard && <div className="bg-white rounded-lg shadow p-3 mt-4 ">
+                    <p id="correct" className="text-green-400">{result.correct}</p>
+                    <p id="wrong" className="text-red-400">{result.wrong}</p>
+                    <strong id="rightAnswer" className="text-green-400">{result.rightAnswer}</strong>
+                  </div>}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div> 
-
     </>
-
- 
   );
 }

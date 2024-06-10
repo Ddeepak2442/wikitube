@@ -1,20 +1,21 @@
-import Head from "next/head";
+// import Head from "next/head";
 import { useState, useCallback, useEffect,useContext, use } from "react";
 import TextInput from "./components/TextInput";
 import Editor from "./components/Editor";
 import RunContainer from "./components/RunContainer";
 // import Header from "./components/Header";
 import ImageUploader from "./components/ImageUploader";
-import WikipediaInput from "./components/WikipediaInput";
+// import WikipediaInput from "./components/WikipediaInput";
 import Summary from './components/Summary';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import SearchInput, { SearchInputSm } from "./components/SearchInput";
 
 import Header from "./components/layout/Header";
-import Layout from "./components/layout/Layout";
+// import Layout from "./components/layout/Layout";
 import AuthContext from "../context/AuthContext";
 
 import Mcq from "./components/mcq";
+import Footer from "./components/layout/Footer";
 
 
 export default function Home({ }) {
@@ -29,7 +30,7 @@ export default function Home({ }) {
   const [selVal, setSelVal] = useState("");
   const [TextPrompt,setTextPrompt] = useState(false);
 
-  const [summaryResult,setSummaryResult] = useState('Summary')
+  const [summaryResult,setSummaryResult] = useState('')
   const egArray = [
     {
       value: "Conway's Game of Life",
@@ -528,21 +529,22 @@ export default function Home({ }) {
     setwikipediaPrompt(true);
     setResult("// Please be patient, this may take a while...");
     setSelVal("");
+    setSummaryResult('...')
     try {
-      const response = await fetch(`${process.env.API_URL}/api/create-prompt/`, {
+      const response = await fetch(`${process.env.API_URL}/api/prompts/?wikipedia_link=${wikipediaInput}`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ Wikipedia_link: wikipediaInput }),
       });
   
       if (response.ok) {
         const data = await response.json();
-        setResult(data.summary);
+        console.log(data[0].Code),
+        setResult(data[0].Code),
+        setSummaryResult(data[0].Summary)
+        setSandboxRunning(true);
+        
       } else if (response.status === 404) {
         const data = await response.json();
-        alert(data.message);
+        alert('Not Found');
       } else {
         throw new Error(`Request failed with status ${response.status}`);
       }
@@ -564,6 +566,7 @@ export default function Home({ }) {
   const [dragOver, setDragOver] = useState(false); // UI state for drag-and-drop
   const [base64Image, setBase64Image] = useState('');
   const [generateMcq,setGenerateMcq] = useState(false)
+  const [mcqResultView,setMcqResultView] = useState('')
   
   const Remix = [
     {
@@ -631,6 +634,7 @@ export default function Home({ }) {
     if (response.ok) {
       try {
         const apiResponse = await response.json();
+        console.log(apiResponse)
         setUploadProgress(80);
 
         if (apiResponse.success) {
@@ -837,6 +841,11 @@ if (!ranOnce) {
   const editorChange = useCallback((value, viewUpdate) => {
     setResult(value);
   }, []);
+
+  function summaryChange  (event)  {
+    event.preventDefault
+    setSummaryResult(event.target.value);
+  };
   
   function runClickPlay(event) {
     event.preventDefault();
@@ -868,16 +877,45 @@ if (!ranOnce) {
   }
 
 
-  function handleGenerateMcq (event){
+  async function handleGenerateMcq (event){
     event.preventDefault();
-    setGenerateMcq(true);
+    
+    if(summaryResult===""){
+        alert ("Enter Valid Input")
+        setGenerateMcq(false);
+    }else{
+    
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_REMOTE_API_URL || ''}/api/generateMcq`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ summary: summaryResult }),
+        });
+  
+        const data = await response.json();
+        const mcqObject = JSON.parse(data.mcq); 
+        //  console.log(typeof(mcqObject))
+        setMcqResultView(mcqObject)
+        setGenerateMcq(true);
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+      } catch(error) {
+        console.error(error);
+        alert(error.message);
+      }
+    }
   }
 
   return (
 
       <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl">
-        <Header  />
-        <SearchInputSm key="wikipediainput-02" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt}/>
+
+        <Header key="wikipediainput-02" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt}/>
+
+        <SearchInputSm key="wikipediainput-01" wikipediaInput={wikipediaInput} onChange={wikipediaInputChange} onSubmit={wikipediaInputSubmit} waiting={waiting} wikipediaPrompt={wikipediaPrompt}/>
         <div className="flex flex-col gap-4 2xl:flex-row w-full">
           <div className="flex flex-col gap-4 2xl:w-1/2">
             <TextInput key="textinput-01" textInput={textInput} onChange={textInputChange} onSubmit={textInputSubmit} waiting={waiting} selectVal={selVal} selectChange={textSelectChange} TextPrompt={TextPrompt} egArray={egArray}/>
@@ -900,8 +938,8 @@ if (!ranOnce) {
           
             
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
-            <Summary  key="summary-01" result={summaryResult} onClick={handleGenerateMcq}/>
-            {generateMcq && <Mcq/>}
+            <Summary  key="summary-01" summaryResult={summaryResult} onSubmit={handleGenerateMcq} onChange={summaryChange}/>
+            {generateMcq && <Mcq mcqResultView={mcqResultView}/>}
             {/* Conditionally render the Save button */}
             {analysisresult && (
         <button
@@ -917,6 +955,7 @@ if (!ranOnce) {
             <RunContainer key="runcont-01" sandboxRunning={sandboxRunning} clickPlay={runClickPlay} clickStop={runClickStop} result={result} logMsg={logMsg} waiting={waiting}/>
           </div>
         </div>
+        <Footer/>
       </div>
 
   );
