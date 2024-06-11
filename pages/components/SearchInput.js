@@ -1,6 +1,6 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-export function SearchInputSm({WikipediaInput, onChange, onSubmit, waiting}){
+export default function SearchInputSm({WikipediaInput, onChange, onSubmit, waiting}){
     return (
         <form onSubmit={onSubmit}>
         <div className='md:hidden sm:flex rounded-lg items-center justify-center border-emerald-500 border-2 flex'>

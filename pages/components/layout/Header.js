@@ -10,7 +10,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import React, { useContext } from "react";
 import Link from "next/link";
 import { UserCircleIcon } from '@heroicons/react/24/outline'
-import SearchInput from '../SearchInput'
+// import SearchInput from '../SearchInput'
 import AuthContext from "../../../context/AuthContext";
 
 function classNames(...classes) {
