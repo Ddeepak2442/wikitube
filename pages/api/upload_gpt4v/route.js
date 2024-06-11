@@ -1,5 +1,7 @@
 import OpenAI from "openai";
 
+export const maxDuration = 300;
+
 
 // Initialize the OpenAI client with the API key. This key is essential for authenticating 
 // the requests with OpenAI's API services.

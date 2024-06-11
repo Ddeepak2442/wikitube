@@ -1,30 +1,30 @@
 import { useState } from "react";
 import Head from "next/head";
 
-const  staticInput ={
-  "questions": [
-    {
-      "question": "What is the main purpose of medicine?",
-      "options": [
-        "Diagnosis, treatment, and prevention of illness and injury",
-        "Teaching about health and wellness",
-        "Exploring the human body's functions",
-        "Designing medical equipment"
-      ],
-      "correctAnswer": "Diagnosis, treatment, and prevention of illness and injury"
-    },
-    {
-      "question": "What does medicine aim at?",
-      "options": [
-        "Increasing life expectancy",
-        "Maintaining and restoring health",
-        "Curing all diseases",
-        "Improving physical performance"
-      ],
-      "correctAnswer": "Maintaining and restoring health"
-    }
-  ]
-};
+// const  staticInput ={
+//   "questions": [
+//     {
+//       "question": "What is the main purpose of medicine?",
+//       "options": [
+//         "Diagnosis, treatment, and prevention of illness and injury",
+//         "Teaching about health and wellness",
+//         "Exploring the human body's functions",
+//         "Designing medical equipment"
+//       ],
+//       "correctAnswer": "Diagnosis, treatment, and prevention of illness and injury"
+//     },
+//     {
+//       "question": "What does medicine aim at?",
+//       "options": [
+//         "Increasing life expectancy",
+//         "Maintaining and restoring health",
+//         "Curing all diseases",
+//         "Improving physical performance"
+//       ],
+//       "correctAnswer": "Maintaining and restoring health"
+//     }
+//   ]
+// };
 
 
 
@@ -37,7 +37,7 @@ export default function Mcq({mcqResultView}) {
 
   // const questionsing = 
   const input = mcqResultView
-  console.log(typeof(input) === typeof(staticInput),input,staticInput)
+  // console.log(typeof(input) === typeof(staticInput),input,staticInput)
 
   const onSubmit = () => {
     setDisplayCard(true);

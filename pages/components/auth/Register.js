@@ -14,19 +14,23 @@ const Register = () => {
   const [dateOfBirth,setDateOfBirth] = useState("")
   const [Passerror, setPassError] = useState('');
   const [gender,setGender] = useState('');
-  const router = useRouter();
+  // const router = useRouter();
 
   const { loading, error, isAuthenticated, register, clearErrors } =
     useContext(AuthContext);
 
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error('error');
       clearErrors();
     }
 
+  
+
     if (isAuthenticated && !loading) {
-      router.push("/login");
+      // router.push("/login");
+      toast.success('verification link sent to your email address ');
+
     }
   }, [isAuthenticated, error, loading]);
 
@@ -41,7 +45,11 @@ const Register = () => {
         console.log(gender)
     if (password !== confirmPassword) {
       setPassError('Passwords do not match');
-    } else {
+    }
+    if(!error){
+      toast.success('verification link sent to your email address ');
+    }
+     else {
       setPassError('');
       // Handle the form submission (e.g., send data to server)
       console.log('Passwords match');

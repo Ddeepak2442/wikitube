@@ -2,14 +2,17 @@ import Layout from "./components/layout/Layout";
 import AuthContext from "../context/AuthContext";
 import { useContext } from "react";
 import Link from "next/link";
+import SearchInputsm from './components/SearchInput'
 
 
 export default function HomePage() {
   const {user} = useContext(AuthContext)
 
   return (
-    <Layout title="Landing Page">
+    
       <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl text-center">
+        <Layout title="Landing Page" >
+        <SearchInputsm/>
         {!user ?
         <div className="bg-slate-50 rounded-xl shadow shadow-emerald-600/30 p-5">
         <p className="mb-3"> <strong>Welcome to wikitube..</strong></p>
@@ -42,7 +45,8 @@ Test your knowledge with our engaging multiple-choice questions (MCQs) designed 
                 </div>
       </div>
       }
+      </Layout>
       </div>
-    </Layout>
+      
   );
 }
