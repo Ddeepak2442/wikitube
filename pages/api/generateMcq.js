@@ -58,9 +58,11 @@ export default async function (req, res) {
       // model:"gpt-3.5-turbo",
       model:"gpt-3.5-turbo",
   messages:[
-    {"role": "system", "content": "You are a helpful assistant to give response as json."},
-    {"role": "user", "content": `${summary}`},
-    {"role": "assistant", "content": "Generate 2 MCQs using the above-given content.  Exact Format the output as follows: \n// const questions = [\n  {\n    question: \"Question text\",\n    options: [\n      \"Option A\",\n      \"Option B\",\n      \"Option C\",\n      \"Option D\"\n    ],\n    correctAnswer: \"optionX\"\n  },\n];dont go beyond the content.give only json.Don't include ```json."},
+    {"role": "system", "content": "You are a helpful assistant designed to output JSON."},
+    {"role": "user", "content": `summary : ${summary}`},
+    {"role": "assistant", "content": "Generate two multiple choice questions on given summary in the form of question,four options and a correct option.dont go beyond the summary.give only valid json as output"}
+      // Generate 2 MCQs using the above-given content.  Exact Format the output as follows: \n// const questions = [\n  {\n    question: \"Question text\",\n    options: [\n      \"Option A\",\n      \"Option B\",\n      \"Option C\",\n      \"Option D\"\n    ],\n    correctAnswer: \"optionX\"\n  },\n];dont go beyond the content.give only json.Don't include ```json.
+      
   ]
     });
   console.log(completion); 
