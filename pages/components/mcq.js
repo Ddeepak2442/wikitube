@@ -1,43 +1,12 @@
 import { useState } from "react";
 import Head from "next/head";
 
-// const  staticInput ={
-//   "questions": [
-//     {
-//       "question": "What is the main purpose of medicine?",
-//       "options": [
-//         "Diagnosis, treatment, and prevention of illness and injury",
-//         "Teaching about health and wellness",
-//         "Exploring the human body's functions",
-//         "Designing medical equipment"
-//       ],
-//       "correctAnswer": "Diagnosis, treatment, and prevention of illness and injury"
-//     },
-//     {
-//       "question": "What does medicine aim at?",
-//       "options": [
-//         "Increasing life expectancy",
-//         "Maintaining and restoring health",
-//         "Curing all diseases",
-//         "Improving physical performance"
-//       ],
-//       "correctAnswer": "Maintaining and restoring health"
-//     }
-//   ]
-// };
-
-
-
-
-export default function Mcq({mcqResultView}) {
+export default function Mcq({ mcqResultView = { questions: [] } }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState('');
   const [result, setResult] = useState({ correct: '', wrong: '', rightAnswer: '' });
   const [displayCard, setDisplayCard] = useState(false);
-
-  // const questionsing = 
-  const input = mcqResultView
-  // console.log(typeof(input) === typeof(staticInput),input,staticInput)
+  const input = mcqResultView;
 
   const onSubmit = () => {
     setDisplayCard(true);
@@ -75,6 +44,11 @@ export default function Mcq({mcqResultView}) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
+
+  // Guard clause for empty questions array
+  if (input.questions.length === 0) {
+    return <div>No Questions Found!</div>;
+  }
 
   return (
     <>
@@ -122,11 +96,7 @@ export default function Mcq({mcqResultView}) {
                     ))}
                   </div>
 
-                  
-            
-            
-            <button className="bg-emerald-500 hover:bg-emerald-700 p-2 rounded w-full text-white text-sm px-3 cursor-pointer mt-3" type="submit" onClick={onSubmit}>Submit</button>
-          
+                  <button className="bg-emerald-500 hover:bg-emerald-700 p-2 rounded w-full text-white text-sm px-3 cursor-pointer mt-3" type="submit" onClick={onSubmit}>Submit</button>
 
                   {displayCard && <div className="bg-white rounded-lg shadow p-3 mt-4 ">
                     <p id="correct" className="text-green-400">{result.correct}</p>
