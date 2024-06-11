@@ -77,11 +77,15 @@ const Login = () => {
                   <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
                 </span>
               </div>
+              
               <button type="submit" className="w-full bg-emerald-500 hover:bg-emerald-700 text-white py-2 rounded-lg transition duration-300">
                 {loading ? "Authenticating..." : "Login"}
               </button>
             </form>
-            <p className="text-center mt-4 text-sm text-gray-600">
+            <p className="text-center mt-2 text-sm text-gray-600">
+              <Link href="/forgotPassword" className="text-blue-500">ForgotPassword?</Link>
+            </p>
+            <p className="text-center mt-2 text-sm text-gray-600">
               Don't have an account? <Link href="/register" className="text-blue-500">Create an Account</Link>
             </p>
           </div>

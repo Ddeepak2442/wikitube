@@ -60,11 +60,12 @@ export default async function (req, res) {
   messages:[
     {"role": "system", "content": "You are a helpful assistant designed to output JSON."},
     {"role": "user", "content": `summary : ${summary}`},
-    {"role": "assistant", "content": "Generate two multiple choice questions on given summary in the form of question,four options and a correct option.dont go beyond the summary.give only valid json as output"}
-      // Generate 2 MCQs using the above-given content.  Exact Format the output as follows: \n// const questions = [\n  {\n    question: \"Question text\",\n    options: [\n      \"Option A\",\n      \"Option B\",\n      \"Option C\",\n      \"Option D\"\n    ],\n    correctAnswer: \"optionX\"\n  },\n];dont go beyond the content.give only json.Don't include ```json.
-      
-  ]
-    });
+    {"role": "assistant", "content": `Generate 2 multiple choice questions from summary.Return your answer entirely in the form of a JSON object. The JSON object should have a key named 'questions' which is an array of the questions.  Each MCQ should include question, the options and correct answer.Don't include anything other than the JSON. The JSON properties of each question should be 'question' (which is the question), 'options' with (A-D) and 'correct option'.Example Format:{question: "What does the Flame Spread Index (FSI) measure?",options: ["The toxicity of a material", "The speed of flame movement on a material's surface","The temperature of a flame","The smoke produced by burning material"],correctAnswer: "The speed of flame movement on a material's surface"}`},
+  ] 
+    
+    // Generate 2 MCQs using the above-given content.  Exact Format the output as follows: \n// const questions = [\n  {\n    question: \"Question text\",\n    options: [\n      \"Option A\",\n      \"Option B\",\n      \"Option C\",\n      \"Option D\"\n    ],\n    correctAnswer: \"optionX\"\n  },\n];dont go beyond the content.give only json.Don't include ```json.
+
+  });
   console.log(completion); 
   console.log("mcq: " + completion.choices[0].message.content);
   res.status(200).json({  mcq: completion.choices[0].message.content});

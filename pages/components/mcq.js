@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 
-const  input ={
+const  staticInput ={
   "questions": [
     {
       "question": "What is the main purpose of medicine?",
@@ -34,9 +34,10 @@ export default function Mcq({mcqResultView}) {
   const [selectedOption, setSelectedOption] = useState('');
   const [result, setResult] = useState({ correct: '', wrong: '', rightAnswer: '' });
   const [displayCard, setDisplayCard] = useState(false);
-  const questionsing = [mcqResultView][0]
-  const input = Object.entries(questionsing)
-   console.log(input)
+
+  // const questionsing = 
+  const input = mcqResultView
+  console.log(typeof(input) === typeof(staticInput),input,staticInput)
 
   const onSubmit = () => {
     setDisplayCard(true);
@@ -120,7 +121,12 @@ export default function Mcq({mcqResultView}) {
                       </div>
                     ))}
                   </div>
-                  <button className="bg-emerald-500 p-2 rounded w-full mt-4 text-white text-sm px-3 cursor-pointer" type="button" onClick={onSubmit}>Submit</button>
+
+                  
+            
+            
+            <button className="bg-emerald-500 hover:bg-emerald-700 p-2 rounded w-full text-white text-sm px-3 cursor-pointer mt-3" type="submit" onClick={onSubmit}>Submit</button>
+          
 
                   {displayCard && <div className="bg-white rounded-lg shadow p-3 mt-4 ">
                     <p id="correct" className="text-green-400">{result.correct}</p>

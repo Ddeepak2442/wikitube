@@ -83,7 +83,7 @@ function ImageUploader(props) {
       </div>
       <div className="flex justify-center items-center mb-5">
         {uploadProgress === 0 || uploadProgress === 100 ? (
-          <button onClick={handleSubmit} className="bg-emerald-500 p-2 rounded w-full text-white text-sm px-3 cursor-pointer">
+          <button onClick={handleSubmit} className="bg-emerald-500 hover:bg-emerald-700 p-2 rounded w-full text-white text-sm px-3 cursor-pointer">
             Generate MicroSim
           </button>
         ) : (

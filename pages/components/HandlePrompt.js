@@ -51,7 +51,7 @@ export default function HandlePrompt({textInput, onChange, onSubmit, waiting, se
               Generating MicroSim...
             </button>
             : 
-            <button className="bg-emerald-500 p-2 rounded w-full text-white text-sm px-3 cursor-pointer" type="submit">Generate MicroSim</button>
+            <button className="bg-emerald-500 hover:bg-emerald-700 p-2 rounded w-full text-white text-sm px-3 cursor-pointer" type="submit">Generate MicroSim</button>
           }
         </form>
       </div>

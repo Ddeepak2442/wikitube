@@ -1,6 +1,6 @@
 
 
-export default function Summary({onSubmit,summaryResult,onChange}){
+export default function Summary({onSubmit,summaryResult,onChange,waiting}){
 
   return (
     <div className="rounded-md border border-gray-100 shadow-md shadow-emerald-600/30 bg-white p-3">
@@ -17,7 +17,12 @@ export default function Summary({onSubmit,summaryResult,onChange}){
           placeholder="Summary"
         />
 
-          <button className="bg-emerald-500 p-2 rounded w-full text-white text-sm px-3 cursor-pointer"  type='submit'>Generate Mcq</button>
+        {waiting && <button className="bg-gray-300 p-2 rounded w-full text-white text-sm px-3" type="submit" disabled>
+              <img src="loading.png" alt="loading icon" className="animate-spin w-4 h-4 mr-2 inline" />
+              Generating Mcq...
+            </button>}
+
+          {!waiting && <button className="bg-emerald-500 hover:bg-emerald-700 p-2 rounded w-full text-white text-sm px-3 cursor-pointer"  type='submit'>Generate Mcq</button>}
         
       </form>
     </div>

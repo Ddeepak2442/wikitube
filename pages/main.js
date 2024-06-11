@@ -879,7 +879,7 @@ if (!ranOnce) {
 
   async function handleGenerateMcq (event){
     event.preventDefault();
-    
+    setWaiting(true);
     if(summaryResult===""){
         alert ("Enter Valid Input")
         setGenerateMcq(false);
@@ -896,7 +896,9 @@ if (!ranOnce) {
   
         const data = await response.json();
         const mcqObject = JSON.parse(data.mcq); 
-        //  console.log(typeof(mcqObject))
+        setWaiting(false);
+        // console.log(mcqObject)
+
         setMcqResultView(mcqObject)
         setGenerateMcq(true);
         if (response.status !== 200) {
@@ -938,8 +940,8 @@ if (!ranOnce) {
           
             
             <Editor key="editor-01" result={result} onChange={editorChange} waiting={waiting}/>
-            <Summary  key="summary-01" summaryResult={summaryResult} onSubmit={handleGenerateMcq} onChange={summaryChange}/>
-            {generateMcq && <Mcq mcqResultView={mcqResultView}/>}
+            <Summary  key="summary-01" summaryResult={summaryResult} onSubmit={handleGenerateMcq} onChange={summaryChange} waiting={waiting}/>
+            {generateMcq && <Mcq mcqResultView={mcqResultView} />}
             {/* Conditionally render the Save button */}
             {analysisresult && (
         <button
