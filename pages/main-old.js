@@ -6,7 +6,7 @@ import RunContainer from "./components/RunContainer";
 import Header from "./components/Header";
 import ImageUploader from "./components/ImageUploader";
 import WikipediaInput from "./components/WikipediaInput";
-import { SearchInputSm } from "./components/SearchInput";
+import  SearchInputSm from "./components/SearchInput";
 import { useRouter } from 'next/router';
 import Summmary from './components/Summary'
 import Mcq from "./components/mcq";

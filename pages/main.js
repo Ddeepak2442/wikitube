@@ -8,7 +8,7 @@ import ImageUploader from "./components/ImageUploader";
 // import WikipediaInput from "./components/WikipediaInput";
 import Summary from './components/Summary';
 // import { useRouter } from 'next/router';
-import SearchInput, { SearchInputSm } from "./components/SearchInput";
+import SearchInputSm  from "./components/SearchInput";
 
 import Header from "./components/layout/Header";
 // import Layout from "./components/layout/Layout";
