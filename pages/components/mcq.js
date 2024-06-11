@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Head from "next/head";
 
-const input = {
+const  input ={
   "questions": [
     {
       "question": "What is the main purpose of medicine?",
