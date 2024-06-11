@@ -34,9 +34,9 @@ export default function Mcq({mcqResultView}) {
   const [selectedOption, setSelectedOption] = useState('');
   const [result, setResult] = useState({ correct: '', wrong: '', rightAnswer: '' });
   const [displayCard, setDisplayCard] = useState(false);
-  // const questionsing = [mcqResultView][0]
-  //   const input = Object.entries(questionsing)
-  //   console.log(input)
+  const questionsing = [mcqResultView][0]
+  const input = Object.entries(questionsing)
+   console.log(input)
 
   const onSubmit = () => {
     setDisplayCard(true);
