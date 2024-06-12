@@ -17,6 +17,7 @@ import AuthContext from "../context/AuthContext";
 import Mcq from "./components/mcq";
 import Footer from "./components/layout/Footer";
 
+export const maxDuration = 300;
 
 export default function Home({ }) {
 
