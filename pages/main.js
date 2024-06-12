@@ -3,19 +3,16 @@ import { useState, useCallback, useEffect,useContext, use } from "react";
 import TextInput from "./components/TextInput";
 import Editor from "./components/Editor";
 import RunContainer from "./components/RunContainer";
-// import Header from "./components/Header";
 import ImageUploader from "./components/ImageUploader";
-// import WikipediaInput from "./components/WikipediaInput";
 import Summary from './components/Summary';
-// import { useRouter } from 'next/router';
 import SearchInputSm  from "./components/SearchInput";
-
 import Header from "./components/layout/Header";
-// import Layout from "./components/layout/Layout";
 import AuthContext from "../context/AuthContext";
-
 import Mcq from "./components/mcq";
 import Footer from "./components/layout/Footer";
+import { toast } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export default function Home({ }) {
@@ -544,7 +541,7 @@ export default function Home({ }) {
         
       } else if (response.status === 404) {
         const data = await response.json();
-        alert('Not Found');
+        toast.error('Not Found');
       } else {
         throw new Error(`Request failed with status ${response.status}`);
       }
@@ -654,7 +651,7 @@ export default function Home({ }) {
           setWaiting(false);
         } else {
           setStatusMessage(apiResponse.message);
-          alert(`HTTP error! status: ${response.status}`);
+          toast.error(`HTTP error! status: ${response.status}`);
           setTimeout(() => {
             window.location.reload();
           }, 1000);
@@ -663,14 +660,14 @@ export default function Home({ }) {
       } catch (error) {
         console.error(error);
         setStatusMessage('Error parsing response.');
-        alert('Requested Failed ! Please Reupload the file.')
+        toast.error('Requested Failed ! Please Reupload the file.')
         setTimeout(() => {
           window.location.reload();
         }, 1000);
       }
     } else {
       // Handle the case where the response status is not in the OK range
-      alert(`HTTP error! status: ${response.status}`);
+      toast.error(`HTTP error! status: ${response.status}`);
       setTimeout(() => {
         window.location.reload();
       }, 1000);
@@ -681,7 +678,7 @@ export default function Home({ }) {
 
   const handleSave = async () => {
     if (!analysisresult || !file) {
-      alert('No analysis result or file to save.');
+      toast.error('No analysis result or file to save.');
       return;
     }
   
@@ -717,16 +714,16 @@ export default function Home({ }) {
   
       if (response.ok) {
         const result = await response.json();
-        alert('Record saved successfully!');
+        toast.success('Record saved successfully!');
         setIsSaved(true);
         // Handle success, maybe clear state or redirect
       } else {
         // Handle errors
-        alert(`Failed to save record: ${response.statusText}`);
+        toast.error(`Failed to save record: ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error saving record:', error);
-      alert('Error saving record.');
+      toast.error('Error saving record.');
     }
   };  
 
@@ -879,13 +876,16 @@ if (!ranOnce) {
 
   async function handleGenerateMcq (event){
     event.preventDefault();
-    setWaiting(true);
+
     if(summaryResult===""){
-        alert ("Enter Valid Input")
+      alert("Enter Valid Input")
+        toast.error("Enter Valid Input")
         setGenerateMcq(false);
+        setWaiting(false);
     }else{
     
       try {
+        setWaiting(true);
         const response = await fetch(`${process.env.NEXT_PUBLIC_REMOTE_API_URL || ''}/api/generateMcq`, {
           method: "POST",
           headers: {
@@ -958,6 +958,8 @@ if (!ranOnce) {
           </div>
         </div>
         <Footer/>
+
+        <ToastContainer position="bottom-right" />
       </div>
 
   );

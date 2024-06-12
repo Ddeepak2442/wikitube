@@ -72,6 +72,7 @@ export default function Example() {
                       </MenuItem>
                       <MenuItem>
                         {({ focus }) => (
+                          <p>
                           <Link
                           
                           onClick={logoutHandler}
@@ -83,6 +84,7 @@ export default function Example() {
                             Log out
                           
                           </Link>
+                          </p>
                         )}
                       </MenuItem>
                     </MenuItems>

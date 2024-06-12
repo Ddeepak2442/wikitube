@@ -2,6 +2,8 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -18,7 +20,7 @@ const ForgotPassword = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: event.target.value,
+          email: emailValue,
         }),
       });
   
@@ -27,7 +29,7 @@ const ForgotPassword = () => {
       } else if (response.status === 404) {
         toast.error('Entered email does not have account yet!');
       } else {
-        throw new Error(`Request failed with status ${response.status}`);
+        toast.error('No user is associated with this email address.');
       }
     } catch(error) {
       console.error(error);
@@ -84,6 +86,7 @@ const ForgotPassword = () => {
         </div>
       </div>
     </div>
+    <ToastContainer position="bottom-right" />
     </main>
   );
 };
