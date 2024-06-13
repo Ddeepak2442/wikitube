@@ -138,10 +138,11 @@ const ResetPassword = () => {
 
       if (response.ok) {
         toast.success('Password Reset Successfully');
-        router.push('/reset-password-success'); // Redirect to login page after successful password reset
+        router.push('reset-password-success'); // Redirect to login page after successful password reset
         console.log(response.status)
       } else{
         console.log(response.status)
+        alert(response.status)
       }
     } catch (error) {
       console.error(error);
