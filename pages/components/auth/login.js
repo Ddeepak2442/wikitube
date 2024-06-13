@@ -84,7 +84,7 @@ const Login = () => {
               </button>
             </form>
             <p className="text-center mt-2 text-sm text-gray-600">
-              <Link href="/forgotPassword" className="text-blue-500">ForgotPassword?</Link>
+              <Link href="/ForgotPassword" className="text-blue-500">ForgotPassword?</Link>
             </p>
             <p className="text-center mt-2 text-sm text-gray-600">
               Don't have an account? <Link href="/register" className="text-blue-500">Create an Account</Link>
