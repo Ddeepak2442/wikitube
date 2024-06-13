@@ -134,15 +134,16 @@ const ResetPassword = () => {
         }),
       });
 
-      if (response.ok) {
+      console.log(response.status)
+
+      if (response.status===302) {
         toast.success('Password Reset Successfully');
         router.push('/reset-password-success'); // Redirect to login page after successful password reset
-      } else {
-        const data = await response.json();
-        throw new Error(data.error || 'An error occurred');
-      }
+        console.log(response.status)
+      } 
     } catch (error) {
       console.error(error);
+      console.log(response.status)
       toast.error(error.message);
     } finally {
       setWaiting(false);
