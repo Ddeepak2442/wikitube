@@ -3,6 +3,7 @@ import AuthContext from "../context/AuthContext";
 import { useContext } from "react";
 import Link from "next/link";
 import SearchInputsm from './components/SearchInput'
+import Footer from "./components/layout/Footer";
 
 
 export default function HomePage() {
@@ -10,8 +11,8 @@ export default function HomePage() {
 
   return (
     
-      <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px] relative 2xl:max-w-7xl text-center">
-        <Layout title="Landing Page" >
+      <div className="w-full p-5 flex flex-col gap-5 max-w-2xl min-w-[320px]   relative 2xl:max-w-7xl text-center">
+        {/* <Layout title="Landing Page" >
         <SearchInputsm/>
         {!user ?
         <div className="bg-slate-50 rounded-xl shadow shadow-emerald-600/30 p-5">
@@ -45,8 +46,23 @@ Test your knowledge with our engaging multiple-choice questions (MCQs) designed 
                 </div>
       </div>
       }
-      </Layout>
+      </Layout> */}
+      <div className="flex flex-row justify-center gap-5 align-middle ">
+        <img src="/static/images/wikitube_logo.png"   alt="Wikitube" width={100}/>
+        <div >
+      <h1 className="font-semibold text-xl">
+      “Remix the Web”
+      </h1>
+      <p className="font-semibold text-xl pt-8">
+      Get Updates
+      </p>
       </div>
-      
+      </div>
+      <div className="mt-96 top-100 md:ml-20">
+      <Footer/>
+      </div>
+      </div>
+
+
   );
 }
